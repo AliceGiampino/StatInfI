@@ -1,0 +1,74 @@
+---
+title: "Script 5 - CI - Wald & LRT"
+author: "Alice Giampino"
+format: html
+editor: visual
+toc: true
+---
+
+```{r}
+
+
+llik_Exp <- function(theta, y){
+  sum(log(dexp(y, rate=theta)))
+}
+llik_Exp <- Vectorize(llik_Exp, vectorize.args = "theta")
+
+set.seed(42)
+n <- 15
+theta_true <- 10
+y <- rexp(n, rate=theta_true)
+
+curve(llik_Exp(theta=x, y), xlim=c(0.1,25), lwd=2)
+
+theta_mle <- 1/mean(y)
+abline(v=theta_mle, col=2, lwd=2)
+
+
+
+InvFisher <- function(theta, y) (theta^2)/length(y)
+Inv_Obs_Fisher <- InvFisher(theta_mle, y)
+
+# Wald CI:
+alpha <- 0.05
+Wald_CI <- theta_mle + c(-1,1)*qnorm(1-alpha/2)*sqrt(Inv_Obs_Fisher)
+Wald_CI
+abline(v=Wald_CI, lty=2, lwd=2)
+abline(h=llik_Exp(theta=Wald_CI, y), lty=2, col=4, lwd=2)
+
+
+
+
+# LRT CI:
+chi <- qchisq(1-alpha, 1)
+curve(llik_Exp(theta=x, y), xlim=c(0.1,25), lwd=2)
+abline(h=llik_Exp(theta=theta_mle, y), lwd=2)
+abline(h=llik_Exp(theta=(theta_mle), y)-chi/2, col=2, lwd=2)
+abline(v=theta_mle, col=2, lwd=2)
+
+llik_Exp(theta=(theta_mle), y)-chi/2
+
+obj <- function(theta, y, alpha, theta_mle){
+  llik_Exp(theta, y) - (llik_Exp(theta_mle, y) - qchisq(1-alpha, 1)/2)
+}
+
+curve(obj(theta=x, y, alpha, theta_mle), xlim=c(0,25))
+abline(h=0, col=2)
+  
+LRT_CI <- numeric(2)
+# uniroot searches the zero of a function:
+LRT_CI[1] <- uniroot(function(x) obj(theta=x, y, alpha, theta_mle), interval=c(0.0001, theta_mle))$root
+LRT_CI[2] <- uniroot(function(x) obj(theta=x, y, alpha, theta_mle), interval=c(theta_mle, 25))$root
+
+abline(v=LRT_CI, lty=2)
+
+LRT_CI
+Wald_CI
+
+############################################
+curve(llik_Exp(theta=x, y), xlim=c(0.1,25))
+abline(v=theta_mle, col=2, lwd=2)
+abline(v=Wald_CI, lty=2, col="orange", lwd=2)
+abline(v=LRT_CI, lty=3, col="blue", lwd=2)
+
+```

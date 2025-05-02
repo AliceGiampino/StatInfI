@@ -1,0 +1,18 @@
+project:
+  type: website
+  output-dir: docs
+  
+# Meta
+author-meta: "Alice Giampino"
+
+website:
+  title: "StatInfI"
+
+
+format:
+  html:
+    theme: [simplex, style.scss]
+    favicon: "img/icona.png"  # or use icona.ico if you prefer
+    toc: false
+    link-external-newwindow: true
+    email-obfuscation: javascript

@@ -1,0 +1,209 @@
+---
+title: "Script 6 - Linear Model"
+author: "Alice Giampino"
+format: html
+editor: visual
+toc: true
+---
+
+```{r}
+
+#Cherry tress data:
+data(trees)
+help(trees)
+n <- nrow(trees)
+
+summary(trees)
+colnames(trees)[1] <- "Diameter"
+
+hist(trees$Volume)
+hist(trees$Diameter)
+hist(trees$Height)
+
+plot(trees, pch=19)
+cor(trees)
+
+
+
+#################################
+#### Regression line:
+
+# We can consider several lines passing through the scatterplot:
+plot(trees$Diameter, trees$Volume, pch=19,
+     ylab="Volume", xlab = "Diameter")
+abline(a=-40, b=5, col=1)
+abline(h=mean(trees$Volume), col=2)
+abline(a=10, b=2, col=3)
+abline(a=-60, b=7, col=4)
+abline(a=-100, b=9, col=6)
+
+
+# Let's estimate the regression line,
+# that is the BEST line passing through the data:
+lm1 <- lm(Volume ~ Diameter, data=trees)
+summ1 <- summary(lm1);summ1
+
+
+abline(lm1, col=2,lwd=2)
+
+
+# Let's look at the regression line:
+plot(trees$Diameter, trees$Volume, pch=19,
+     ylab="Volume", xlab = "Diameter")
+abline(lm1, col=2)
+
+
+# Compute the predicted values of the model:
+coef(lm1)[1] + coef(lm1)[2]*trees$Diameter
+y_prev <- predict(lm1)
+
+y_prev == coef(lm1)[1] + coef(lm1)[2]*trees$Diameter
+
+
+
+#### Residuals:
+# Once we fitted the model, we can compute the residuals
+e <- trees$Volume - y_prev
+
+# Graphical representation of the residuals:
+segments(x0=trees$Diameter, x1=trees$Diameter,
+         y0=trees$Volume, y1=y_prev)
+
+# Estimate of sigma^2
+SSres <- sum(e^2)
+sigma2_hat <- SSres/(n-2)
+sqrt(sigma2_hat)
+
+SStot <- var(trees$Volume)*(n-1)
+SSreg <- sum((y_prev - mean(trees$Volume))^2)
+
+SSreg # spiegata
+SSres # residua
+SStot # totale
+
+# Deviance decomposition:
+round(SStot, 8) == round(SSres + SSreg, 8) 
+
+# R^2:
+R2 <- SSreg/SStot; R2
+(cor(trees$Diameter, trees$Volume))^2
+
+# Design matrix:
+X <- cbind(1, trees$Diameter); X
+solve((t(X)%*%X))
+
+# The summary contains several information:
+names(summ1)
+summ1$cov.unscaled
+summ1$residuals
+
+
+
+
+
+###################################
+#### Regression plane:
+
+# We consider an additional covariate:
+lm2 <- lm(Volume ~ Diameter + Height, data=trees)
+summ2 <- summary(lm2); summ2
+
+library(scatterplot3d)
+library(plotly)
+
+plot3d <- scatterplot3d(trees$Diameter, trees$Height, trees$Volume, 
+        angle=40, scale.y=0.7, pch=16, color ="red", 
+       # angle=40, scale.y=0.7, pch=16, color ="red", 
+        main ="Regression Plane")
+plot3d$plane3d(lm2, lty.box = "solid")
+plot3d$points3d(trees$Diameter, trees$Height, trees$Volume,col="blue", type="h", pch=16)
+
+
+step(lm2)
+
+
+##################################
+#### Dummy:
+
+trees$Height_factor <- factor(ifelse(trees$Height < 76, "Basso", "Alto"))
+str(trees)
+
+lm_dummy <- lm(Volume ~ Diameter + Height_factor, data=trees)
+summary(lm_dummy)
+
+plot(Volume ~ Diameter, data=trees, col=Height_factor, pch=20)
+abline(a=-31.1856, b=4.7700, col=1)
+abline(a=-31.1856-4.0699, b=4.7700, col=2)
+legend(8,70, legend=c("Alto","Basso"), col=1:2, lty=1, bty = "n")
+
+
+
+
+
+
+##################################
+#### Polynomial regression:
+cor(trees)
+
+plot(trees$Height, trees$Volume, pch=19,
+     ylab="Volume", xlab = "Diameter")
+lm_poly_1 <- lm(Volume ~ Height, data=trees)
+summary(lm_poly_1)
+
+abline(lm_poly_1, col=2)
+
+lm_poly_2 <- lm(Volume ~ Height + I(Height^2), data=trees)
+summ_poly_2 <- summary(lm_poly_2)
+lm_poly_3 <- lm(Volume ~ Height + I(Height^2) + I(Height^3), data=trees)
+summ_poly_3 <- summary(lm_poly_3)
+
+quad <- function(h, model){
+  coef <- coef(model)
+  x <- coef[1] + coef[2]*h + coef[3]*h^2
+  return(x)
+}
+
+cubic <- function(h, model){
+  coef <- coef(model)
+  x <- coef[1] + coef[2]*h + coef[3]*h^2 + coef[4]*h^3
+  return(x)
+}
+
+plot(trees$Height, trees$Volume, pch=19,
+     ylab="Volume", xlab = "Diameter")
+abline(lm_poly_1, col=2)
+curve(quad(x, lm_poly_2), add=T, col=3)
+curve(cubic(x, lm_poly_3), add=T, col=4)
+
+
+# The anova function compares two models:
+# If we accept the hypothesis that the two models 
+# have the same fit, then we prefer the simpler one
+anova(lm_poly_1, lm_poly_3)
+
+
+
+
+
+
+##################################
+
+# Let us suppose that a tree is a cylinder.
+# We know that the volume of a cylinder
+# is V = pi * (Diameter/2)^2 * Height
+
+# Then log(V) = log(pi/4) + 2log(Diameter) + log(Height)
+Y <- log(trees$Volume)
+X1 <- log(trees$Diameter)
+X2 <- log(trees$Height)
+
+lm_log <- lm(Y ~ X1 + X2)
+summary(lm_log)
+
+plot3d <- scatterplot3d(X1, X2, Y, 
+                        angle=60, scale.y=0.7, pch=16, color ="red", 
+                        main ="Regression Plane")
+plot3d$plane3d(lm_log, lty.box = "solid")
+plot3d$points3d(X1, X2, Y,col="blue", type="h", pch=16)
+
+```

@@ -1,0 +1,9 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Statistical Inference I",
+    "section": "",
+    "text": "Statistical Inference I provides an introduction to Statistical Inference, with a focus on point estimates. The course cover the problem of obtaining estimators for the parameters of a distribution, hypotheses testing and it ends with some basis knowledge on linear models.\nSyllabus\n\nIntroduction to statistical inference.\nEstimates and estimators: definitions and properties.\nThe likelihood function and related quantities.\nLikelihood-based inference:\n\nthe maximum likelihood estimator (MLE) and its properties;\nhypothesis testing.\nlikelihood-based confidence regions.\n\nMathematical and computational tools to deal with the likelihood approach.\nLinear models.\n\nNotes Lecture notes\nScripts\n\nScrip 1: Estimators.\nScrip 2: MLE - Normal.\nScrip 3: Newton-Raphson - Gamma.\nScrip 4: CI - Normal.\nScrip 5: CI - Wald & LRT.\nScrip 5: LM.\n\nTextbooks\n\nCasella, G. and Berger, R.L., Statistical Inference, Second Edition.\nEveritt, B. and Hothorn, T, An Introduction to Applied Multivariate Statistics with R.\nAzzalini, A., Statistical Inference Based on the likelihood."
+  }
+]

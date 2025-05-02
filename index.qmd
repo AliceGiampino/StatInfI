@@ -1,0 +1,57 @@
+---
+title: "Statistical Inference I"
+subtitle: "Ph.D. program in Economics, Statistics and Data Science."
+author: "Alice Giampino"
+institute: "_University of Milano-Bicocca_"
+editor: source
+---
+
+------------------------------------------------------------------------
+
+**Statistical Inference I** provides an introduction to Statistical Inference, with a focus on point estimates. The course cover the problem of obtaining estimators for the parameters of a distribution, hypotheses testing and it ends with some basis knowledge on linear models.
+
+**Syllabus**
+
+-   Introduction to statistical inference.
+
+-   Estimates and estimators: definitions and properties.
+
+-   The likelihood function and related quantities.
+
+-   Likelihood-based inference:
+
+    -   the maximum likelihood estimator (MLE) and its properties;
+
+    -   hypothesis testing.
+
+    -   likelihood-based confidence regions.
+
+-   Mathematical and computational tools to deal with the likelihood approach.
+
+-   Linear models.
+
+**Notes** [Lecture notes](https://drive.google.com/file/d/1TyHpHBnichkyLC3SaV2zZrRjDhSPl59P/view?usp=sharing)
+
+**Scripts**
+
+-   [Scrip 1:](Script1.qmd) Estimators.
+
+-   [Scrip 2:](Script2.qmd) MLE - Normal.
+
+-   [Scrip 3:](Script3.qmd) Newton-Raphson - Gamma.
+
+-   [Scrip 4:](Script4.qmd) CI - Normal.
+
+-   [Scrip 5:](Script5.qmd) CI - Wald & LRT.
+
+-   [Scrip 5:](Script5.qmd) LM.
+
+**Textbooks**
+
+-   Casella, G. and Berger, R.L., Statistical Inference, Second Edition.
+
+-   Everitt, B. and Hothorn, T, An Introduction to Applied Multivariate Statistics with R.
+
+-   Azzalini, A., Statistical Inference Based on the likelihood.
+
+------------------------------------------------------------------------

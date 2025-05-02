@@ -10,7 +10,7 @@ toc: true
 
 #Cherry tress data:
 data(trees)
-help(trees)
+# help(trees)
 n <- nrow(trees)
 
 summary(trees)
@@ -21,7 +21,7 @@ hist(trees$Diameter)
 hist(trees$Height)
 
 plot(trees, pch=19)
-cor(trees)
+cor(trees[,1:3])
 
 
 
@@ -143,7 +143,7 @@ legend(8,70, legend=c("Alto","Basso"), col=1:2, lty=1, bty = "n")
 
 ##################################
 #### Polynomial regression:
-cor(trees)
+cor(trees[,1:3])
 
 plot(trees$Height, trees$Volume, pch=19,
      ylab="Volume", xlab = "Diameter")

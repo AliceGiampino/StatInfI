@@ -3,6 +3,8 @@ title: "Statistical Inference I"
 subtitle: "Ph.D. program in Economics, Statistics and Data Science."
 author: "Alice Giampino"
 institute: "_University of Milano-Bicocca_"
+execute:
+  cache: true
 editor: source
 ---
 
@@ -44,7 +46,7 @@ editor: source
 
 -   [Scrip 5:](Script5.qmd) CI - Wald & LRT.
 
--   [Scrip 5:](Script5.qmd) LM.
+-   [Scrip 6:](Script6.qmd) LM.
 
 **Textbooks**
 
